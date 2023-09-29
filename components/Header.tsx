@@ -6,11 +6,13 @@ import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx"
 import { HiHome } from "react-icons/hi"
 import { BiSearch } from "react-icons/bi"
+import { FaUserAlt } from "react-icons/fa"
 import Button from "./Button";
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
-import {useSupabaseClient} from "@supabase/auth-helpers-react"
-
+import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import toast from "react-hot-toast";
+ 
 interface HeaderProps {
     children: React.ReactNode,
     className?: string
@@ -22,16 +24,18 @@ const Header = ({ children, className }: HeaderProps) => {
     const authModal = useAuthModal();
 
     const supabaseClient = useSupabaseClient();
-    const {user} = useUser();
+    const { user } = useUser();
 
     const handleLogout = async () => {
-        const {error}  = await supabaseClient.auth.signOut();
+        const { error } = await supabaseClient.auth.signOut();
 
         router.refresh();
 
-        if(error) {
-            console.log(error);
-        } 
+        if (error) {
+            toast.error(error.message);
+        } else {
+            toast.success('Logged out!')
+        }
     }
 
     return (
@@ -80,25 +84,37 @@ const Header = ({ children, className }: HeaderProps) => {
                     </button>
                 </div>
                 <div className="flex justify-between items-center gapx-4">
-                  {user? 
-                  <div>Logged In</div>
-                  : <>
-                  <div>
-                        <Button
-                            onClick={authModal.onOpen}
-                            className="bg-transparent text-neutral-300 font-medium">
-                            Sign up
-                        </Button>
-                    </div>
-                    <div>
-                        <Button
-                            onClick={authModal.onOpen}
-                            className="bg-white px-6  py-2">
-                            Log in
-                        </Button>
-                    </div>
-                  </>
-}
+                    {user ?
+                        <div className="flex gap-x-4 items-center">
+                            <Button
+                                className="bg-white px-6 py-2"
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </Button>
+                            <Button
+                                onClick={() => router.push('/account')}
+                                className="bg-white">
+                                <FaUserAlt />
+                            </Button>
+                        </div>
+                        : <>
+                            <div>
+                                <Button
+                                    onClick={authModal.onOpen}
+                                    className="bg-transparent text-neutral-300 font-medium">
+                                    Sign up
+                                </Button>
+                            </div>
+                            <div>
+                                <Button
+                                    onClick={authModal.onOpen}
+                                    className="bg-white px-6  py-2">
+                                    Log in
+                                </Button>
+                            </div>
+                        </>
+                    }
                 </div>
             </div>
             {children}
