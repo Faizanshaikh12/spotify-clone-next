@@ -1,16 +1,22 @@
 "use client"
 
-import { TbPlaylist } from "react-icons/tb"
-import { AiOutlinePlus } from "react-icons/ai"
+import {TbPlaylist} from "react-icons/tb"
+import {AiOutlinePlus} from "react-icons/ai"
 import useAuthModal from "@/hooks/useAuthModal"
-import { useUser } from "@/hooks/useUser"
+import {useUser} from "@/hooks/useUser"
 import useUploadModal from "@/hooks/useUploadModal"
+import {Song} from "../types";
+import MediaItem from "./MediaItem";
 
-const Library = () => {
+interface LibraryProps {
+    songs: Song[]
+}
+
+const Library = ({songs}: LibraryProps) => {
 
     const authModal = useAuthModal();
     const uploadModal = useUploadModal();
-    const { user } = useUser();
+    const {user} = useUser();
 
     const onClick = () => {
         if (!user) {
@@ -18,7 +24,6 @@ const Library = () => {
         }
         return uploadModal.onOpen();
     }
-
 
 
     return (
@@ -37,7 +42,7 @@ const Library = () => {
                 gap-x-2
                 ">
                     <TbPlaylist size={26}
-                        className="text-neutral-400"
+                                className="text-neutral-400"
                     />
                     <p
                         className="text-neutral-400 font-meduim text-md"
@@ -52,7 +57,14 @@ const Library = () => {
                 />
             </div>
             <div className="flex flex-col gap-y-2 mt-4 px-3">
-                List of songs!
+                {songs.map((song) => (
+                    <MediaItem
+                        key={song.id}
+                        song={song}
+                        onClick={() => {
+                        }}
+                    />
+                ))}
             </div>
         </div>
     )

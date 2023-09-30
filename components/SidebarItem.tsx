@@ -14,6 +14,7 @@ interface SidebarItemProps {
 }
 
 const SidebarItem = ({ href, icon: Icon, label, active }: SidebarItemProps) => {
+    
     return (
         <Link
             href={href}
