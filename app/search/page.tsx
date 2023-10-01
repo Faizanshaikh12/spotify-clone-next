@@ -1,5 +1,5 @@
 import Header from "@/components/Header";
-import { getSongsByTitle } from "../../../actions/getSongsByTitle";
+import { getSongsByTitle } from "../../actions/getSongsByTitle";
 import SearchInput from "@/components/SearchInput";
 import SearchContent from "./components/SearchContent";
 
