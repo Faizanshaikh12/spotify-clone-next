@@ -4,7 +4,6 @@ import LikedContent from "./components/LikedContent";
 import {getLikedSongs} from "../../actions/getLikedSongs";
 
 const Liked = async () => {
-
     const songs = await getLikedSongs();
 
     return (
